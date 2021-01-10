@@ -1,8 +1,11 @@
-function analizaStatystyczna([string]$plikZrodlowy)
-{
-    $zrodlo = Get-Content $plikZrodlowy
-    $zrodlo = $zrodlo.ToCharArray() | Group-Object
-    return $zrodlo | Select-Object Name,@{l="Code";e={[int][char]$_.Name}},Count | Sort Count -Descending
+function analizaStatystyczna([string]$plikZrodlowy) {
+    $bytes = [System.IO.File]::ReadAllBytes($plikZrodlowy)
+    $bytes = $bytes | Group-Object
+    return $bytes |`
+        Select-Object @{l = 'Znak'; e = { [char][int]$_.name } }, @{l = 'Kod'; e = { $_.name } }, @{l = 'Ilosc'; e = { $_.Count } }`
+    | Sort-Object 'Ilosc' -Descending
 }
+
+
 
 analizaStatystyczna szyfrogram_f_1.txt
