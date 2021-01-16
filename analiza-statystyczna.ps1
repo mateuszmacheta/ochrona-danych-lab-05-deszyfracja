@@ -1,4 +1,5 @@
-function analizaStatystyczna([string]$plikZrodlowy) {
+function analizaStatystyczna([string]$plikZrodlowy)
+{
     $bytes = [System.IO.File]::ReadAllBytes($plikZrodlowy)
     $bytes = $bytes | Group-Object
     return $bytes |`
@@ -8,4 +9,4 @@ function analizaStatystyczna([string]$plikZrodlowy) {
 
 
 
-analizaStatystyczna szyfrogram_f_1.txt
+analizaStatystyczna  'C:\Users\machetam\Documents\WindowsPowerShell\lab05\szyfrogram_f_0.txt'
