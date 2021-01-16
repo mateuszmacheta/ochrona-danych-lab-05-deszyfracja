@@ -2,32 +2,14 @@
 {
     $zrodlo = Get-Content $plikZrodlowy
     $zrodlo = $zrodlo.ToCharArray()
-
-    $alfabet = New-Object -TypeName 'System.Collections.Generic.Dictionary[[char], [char]]'
-    
-    # tekst 0
-    <#$alfabet = @{
-        [char]88  = ' ';
-        [char]34  = 'a';
-        [char]187 = 't';
-        [char]43  = 'k';
-
-        [char]240 = 'e';
-        [char]190 = 'i';
-        [char]217 = 'o';
-        [char]168 = 'z';
-        [char]9   = 'y';
-        [char]16  = 'w';
-        [char]150 = 'n'; 
-    }#>
     
     if ($plikWynikowy -eq '')
     {
         foreach ($c in $zrodlo)
         {
             #Write-Host $c
-            if ($alfabet.ContainsKey($c))
-            { Write-Host $alfabet[$c] -ForegroundColor White -NoNewline }
+            if ($alfabet[1].Contains($c))
+            { Write-Host $alfabet[0][$alfabet[1].IndexOf($c)] -ForegroundColor White -NoNewline }
             else
             { Write-Host $c -ForegroundColor Gray -NoNewline }
         }
@@ -36,29 +18,28 @@
     {
         foreach ($c in $zrodlo)
         {
-            if ($alfabet.ContainsKey($c))
-            { $alfabet[$c] | Out-File -FilePath $plikWynikowy -Append -NoNewline }
+            if ($alfabet[1].Contains($c))
+            { $alfabet[0][$alfabet[1].IndexOf($c)] | Out-File -FilePath $plikWynikowy -Append -NoNewline }
             else
             { '*' | Out-File -FilePath $plikWynikowy -Append -NoNewline }
         }
     }
 }
 
-<#tekst 1
+<# $o = @(
+    [char]'X',
+    [char]'"',
+    [char]240,
+    [char]190,
+    [char]217,
+    [char]168,
+    [char]9,
+    [char]16,
+    [char]187,
+    [char]150)
 
-        $alfabet = @{
-        [char]88 = ' ';
-        [char]190 = 'a';
-        [char]34 = 'e';
-        [char]240 = 'i';
-        [char]217 = 'o';
-        [char]168 = 'z';
-        [char]16 = 'n';
-        [char]102 = 'c';
-        [char]9 = 'w';
-        [char]137 = 'r';   
-    }#>
+$s = $o -join ''
 
-#deszyfrujCezar szyfrogram_f_0.txt
+deszyfrujCezar szyfrogram_f_0.txt @(' aeioznytw', $s) out.txt #>
 
 
