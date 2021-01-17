@@ -3,7 +3,7 @@
 $oryginal = '.\Tekst_jawny_0.txt'
 $szyfrogram = '.\szyfrogram_f_0.txt'
 $najSciezka = '.\najpopularniejsze-slowa.txt'
-$dlugoscMapy = 15
+$dlugoscMapy = 20
 
 $naj = Get-Content '.\najpopularniejsze-slowa.txt'
 
@@ -14,9 +14,6 @@ $naj = Get-Content '.\najpopularniejsze-slowa.txt'
 . .\zapisz-alfabet.ps1
 
 # DO LICZENIA SHA1
-
-$stringAsStream = [System.IO.MemoryStream]::new()
-$writer = [System.IO.StreamWriter]::new($stringAsStream)
 
 $map1 = analizaStatystyczna $oryginal
 $map2 = analizaStatystyczna $szyfrogram
@@ -38,10 +35,14 @@ $max = ($map2 | Measure-Object -Property 'Ilosc' -Sum).Sum
 # GŁÓWNA PĘTLA
 
 $j = 0
-# for powershell 7
-#(0..[int16]::MaxValue) | ForEach-Object -Parallel
+# for powershell <7
+#(0..[int16]::MaxValue) | ForEach-Object -Parallel { deszyfrujMain $alfabet }
+
 While ($true)
 {
+    $stringAsStream = [System.IO.MemoryStream]::new()
+    $writer = [System.IO.StreamWriter]::new($stringAsStream)
+    
     # Losowe mapowanie
     $temp = [System.Collections.ArrayList]@()
     (1..($map2.Count - 1)) | % { $temp.Add($map2[$_]) | Out-Null }
@@ -107,7 +108,7 @@ While ($true)
     }
 
     $prefix = $total.ToString().PadLeft(12, '0')
-    
+   
     Rename-Item -Path (".\auto_tekst\{0}.txt" -f $sha)   -NewName ("{0}_{1}.txt" -f $prefix, $sha)
 
     $j++
